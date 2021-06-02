@@ -25,6 +25,7 @@ use crate::engine::{
 };
 use crate::error;
 use crate::util::Result;
+use async_trait::async_trait;
 use std::sync::atomic::Ordering;
 
 /// Parameters for the CSV Source Operator
@@ -376,10 +377,11 @@ struct CsvSourceProcessor {
     params: CsvSourceParameters,
 }
 
+#[async_trait]
 impl QueryProcessor for CsvSourceProcessor {
     type Output = MultiPointCollection;
 
-    fn query<'a>(
+    async fn query<'a>(
         &self,
         query: QueryRectangle,
         _ctx: &'a dyn QueryContext,

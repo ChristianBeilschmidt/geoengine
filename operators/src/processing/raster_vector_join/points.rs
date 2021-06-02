@@ -92,7 +92,7 @@ impl RasterPointJoinProcessor {
             spatial_resolution: query.spatial_resolution,
         };
 
-        let raster_query = match raster_processor.raster_query(query, ctx) {
+        let raster_query = match raster_processor.raster_query(query, ctx).await {
             Ok(q) => q,
             Err(e) => return futures::stream::once(async { Err(e) }).boxed(),
         };
@@ -257,7 +257,7 @@ impl VectorQueryProcessor for RasterPointJoinProcessor {
         query: QueryRectangle,
         ctx: &'a dyn QueryContext,
     ) -> Result<BoxStream<'a, Result<Self::VectorType>>> {
-        let mut stream = self.points.query(query, ctx)?;
+        let mut stream = self.points.query(query, ctx).await?;
 
         for (raster_processor, new_column_name) in
             self.raster_processors.iter().zip(&self.column_names)

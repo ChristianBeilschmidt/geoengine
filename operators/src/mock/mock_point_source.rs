@@ -6,6 +6,7 @@ use crate::{
     },
     util::Result,
 };
+use async_trait::async_trait;
 use futures::stream::{self, BoxStream, StreamExt};
 use geoengine_datatypes::collections::VectorDataType;
 use geoengine_datatypes::{
@@ -20,9 +21,10 @@ pub struct MockPointSourceProcessor {
     points: Vec<Coordinate2D>,
 }
 
+#[async_trait]
 impl QueryProcessor for MockPointSourceProcessor {
     type Output = MultiPointCollection;
-    fn query<'a>(
+    async fn query<'a>(
         &'a self,
         _query: QueryRectangle,
         ctx: &'a dyn QueryContext,

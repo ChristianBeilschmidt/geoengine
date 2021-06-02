@@ -195,9 +195,10 @@ where
                         .sub_query
                         .new_fold_accu(fold_tile_spec, tile_query_rectangle)?;
 
-                    let tile_query_stream = this
+                    let tile_query_stream = ready!(this
                         .source
-                        .raster_query(tile_query_rectangle, *this.query_ctx)?;
+                        .raster_query(tile_query_rectangle, *this.query_ctx)
+                        .poll(cx))?;
 
                     let tile_folding_stream =
                         tile_query_stream.try_fold(tile_folding_accu, this.sub_query.fold_method());

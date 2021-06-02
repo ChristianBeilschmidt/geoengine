@@ -28,6 +28,9 @@ pub enum Error {
     TokioJoin {
         source: tokio::task::JoinError,
     },
+    Reqwest {
+        source: reqwest::Error,
+    },
 
     TokioSignal {
         source: std::io::Error,
@@ -202,5 +205,11 @@ impl From<std::io::Error> for Error {
 impl From<gdal::errors::GdalError> for Error {
     fn from(gdal_error: gdal::errors::GdalError) -> Self {
         Self::Gdal { source: gdal_error }
+    }
+}
+
+impl From<reqwest::Error> for Error {
+    fn from(source: reqwest::Error) -> Self {
+        Self::Reqwest { source }
     }
 }

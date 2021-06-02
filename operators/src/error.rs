@@ -190,6 +190,10 @@ pub enum Error {
     WindowSizeMustNotBeZero,
 
     NotYetImplemented,
+
+    NotImplemented,
+
+    LoadingInfo,
 }
 
 impl From<geoengine_datatypes::error::Error> for Error {

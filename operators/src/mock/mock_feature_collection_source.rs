@@ -5,6 +5,7 @@ use crate::engine::{
 };
 use crate::engine::{QueryContext, QueryProcessor, QueryRectangle};
 use crate::util::Result;
+use async_trait::async_trait;
 use futures::stream::{self, BoxStream, StreamExt};
 use geoengine_datatypes::collections::{FeatureCollection, FeatureCollectionInfos};
 use geoengine_datatypes::primitives::{
@@ -21,13 +22,14 @@ where
     collections: Vec<FeatureCollection<G>>,
 }
 
+#[async_trait]
 impl<G> QueryProcessor for MockFeatureCollectionSourceProcessor<G>
 where
     G: Geometry + ArrowTyped + Send + Sync + 'static,
 {
     type Output = FeatureCollection<G>;
 
-    fn query<'a>(
+    async fn query<'a>(
         &'a self,
         _query: QueryRectangle,
         _ctx: &'a dyn QueryContext,

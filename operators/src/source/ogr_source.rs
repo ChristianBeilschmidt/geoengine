@@ -43,6 +43,7 @@ use crate::{
     },
     error,
 };
+use async_trait::async_trait;
 use geoengine_datatypes::dataset::DatasetId;
 use std::convert::{TryFrom, TryInto};
 
@@ -307,13 +308,14 @@ where
     }
 }
 
+#[async_trait]
 impl<G> QueryProcessor for OgrSourceProcessor<G>
 where
     G: Geometry + ArrowTyped + 'static + std::marker::Unpin + TryFromOgrGeometry,
     FeatureCollectionRowBuilder<G>: FeatureCollectionBuilderGeometryHandler<G>,
 {
     type Output = FeatureCollection<G>;
-    fn query<'a>(
+    async fn query<'a>(
         &'a self,
         query: QueryRectangle,
         ctx: &'a dyn QueryContext,

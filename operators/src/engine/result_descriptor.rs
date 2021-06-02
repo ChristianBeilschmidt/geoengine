@@ -171,6 +171,29 @@ pub enum TypedResultDescriptor {
     Vector(VectorResultDescriptor),
 }
 
+impl TypedResultDescriptor {
+    pub fn get_plot(self) -> Option<PlotResultDescriptor> {
+        if let TypedResultDescriptor::Plot(r) = self {
+            return Some(r);
+        }
+        None
+    }
+
+    pub fn get_raster(self) -> Option<RasterResultDescriptor> {
+        if let TypedResultDescriptor::Raster(r) = self {
+            return Some(r);
+        }
+        None
+    }
+
+    pub fn get_vector(self) -> Option<VectorResultDescriptor> {
+        if let TypedResultDescriptor::Vector(r) = self {
+            return Some(r);
+        }
+        None
+    }
+}
+
 impl From<PlotResultDescriptor> for TypedResultDescriptor {
     fn from(value: PlotResultDescriptor) -> Self {
         Self::Plot(value)
